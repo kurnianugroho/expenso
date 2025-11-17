@@ -9,37 +9,6 @@ import FirebaseFirestore
 import UIKit
 
 class TransactionViewController: UITableViewController {
-    @IBAction func onAddButtonTap(_: UIBarButtonItem) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        guard let addTransactionVC = storyboard.instantiateViewController(withIdentifier: "AddTransactionVC") as? AddTransactionViewController else { return }
-
-        addTransactionVC.modalPresentationStyle = .pageSheet
-        if let sheet = addTransactionVC.sheetPresentationController {
-            sheet.detents = [
-                UISheetPresentationController.Detent.custom { context in
-                    context.maximumDetentValue * 0.6
-                },
-                .large(),
-            ]
-            sheet.prefersGrabberVisible = true
-        }
-
-        addTransactionVC.onAddTransaction = { tx in
-            var modifiedTx = tx
-            modifiedTx.userId = self.userId
-            self.txServices?.addTransaction(modifiedTx) { result in
-                if case let .failure(error) = result {
-                    self.showToast(
-                        message: error.localizedDescription,
-                        backgroundColor: .red,
-                    )
-                }
-            }
-        }
-
-        present(addTransactionVC, animated: true)
-    }
-
     var txServices: TransactionServices?
     var userId: String? {
         didSet {
@@ -56,6 +25,8 @@ class TransactionViewController: UITableViewController {
             }
         }
     }
+    
+    //MARK: - UIViewController functions
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -147,4 +118,36 @@ class TransactionViewController: UITableViewController {
          // Pass the selected object to the new view controller.
      }
      */
+    
+    //MARK: - Navigation Bar functions
+    @IBAction func onAddButtonTap(_: UIBarButtonItem) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let addTransactionVC = storyboard.instantiateViewController(withIdentifier: "AddTransactionVC") as? AddTransactionViewController else { return }
+
+        addTransactionVC.modalPresentationStyle = .pageSheet
+        if let sheet = addTransactionVC.sheetPresentationController {
+            sheet.detents = [
+                UISheetPresentationController.Detent.custom { context in
+                    context.maximumDetentValue * 0.6
+                },
+                .large(),
+            ]
+            sheet.prefersGrabberVisible = true
+        }
+
+        addTransactionVC.onAddTransaction = { tx in
+            var modifiedTx = tx
+            modifiedTx.userId = self.userId
+            self.txServices?.addTransaction(modifiedTx) { result in
+                if case let .failure(error) = result {
+                    self.showToast(
+                        message: error.localizedDescription,
+                        backgroundColor: .red,
+                    )
+                }
+            }
+        }
+
+        present(addTransactionVC, animated: true)
+    }
 }
