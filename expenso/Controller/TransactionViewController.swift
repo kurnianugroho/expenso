@@ -66,7 +66,9 @@ class TransactionViewController: UITableViewController {
                 .foregroundColor: UIColor.black,
             ]
         }
-
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         if let txServices = txServices {
             listener = txServices.listenTransactions { result in
                 switch result {
