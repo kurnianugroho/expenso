@@ -12,7 +12,7 @@
         <!--Login View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="LoginViewController" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="LoginViewController" customModule="expenso" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -74,8 +74,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="VJY-dq-AR3"/>
                     <connections>
-                        <outlet property="emailTextField" destination="ARH-St-uHJ" id="ktw-G9-7vR"/>
-                        <outlet property="passwordTextField" destination="l6I-UJ-hFq" id="ALO-Lb-eSw"/>
+                        <outlet property="emailTextField" destination="ARH-St-uHJ" id="MoG-ZB-5hQ"/>
+                        <outlet property="passwordTextField" destination="l6I-UJ-hFq" id="Z8J-cy-Ow5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

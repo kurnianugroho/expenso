@@ -78,6 +78,11 @@ class TransactionViewController: UITableViewController {
             }
         }
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        listener?.remove()
+        listener = nil
+    }
 
     // MARK: - Table view data source
 
