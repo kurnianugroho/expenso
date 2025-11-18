@@ -12,7 +12,8 @@ class AddTransactionViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet var amountTextField: UITextField!
     @IBOutlet var notesTextField: UITextField!
     @IBOutlet var timestampPicker: UIDatePicker!
-
+    @IBOutlet weak var backButton: UIButton!
+    
     var onAddTransaction: ((TransactionModel) -> Void)?
 
     var categories: [String] = [
@@ -27,6 +28,8 @@ class AddTransactionViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
 
         amountTextField.delegate = self
+        amountTextField.addDoneButton()
+        notesTextField.delegate = self
 
         // Do any additional setup after loading the view.
         categoryButton.menu = UIMenu(
@@ -37,12 +40,22 @@ class AddTransactionViewController: UIViewController, UITextFieldDelegate {
             },
         )
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        // Show/hide back button based on device orientation
+        let isPortrait = view.bounds.height > view.bounds.width
+        backButton.isHidden = isPortrait
+    }
+
 
     override func touchesBegan(_: Set<UITouch>, with _: UIEvent?) {
         view.endEditing(true)
     }
 
-    func textFieldShouldReturn(_: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
         return true
     }
 
@@ -91,5 +104,9 @@ class AddTransactionViewController: UIViewController, UITextFieldDelegate {
             onAddTransaction?(newTx)
             dismiss(animated: true)
         }
+    }
+    
+    @IBAction func onBackTap(_ sender: Any) {
+        dismiss(animated: true)
     }
 }

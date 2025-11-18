@@ -54,8 +54,10 @@ class TransactionServices {
     // MARK: - Real-time listener
 
     // Returns ListenerRegistration so caller can remove listener on deinit
-    func listenTransactions(onChange: @escaping (Result<[TransactionModel], Error>) -> Void) -> ListenerRegistration? {
+    func listenTransactions(startDate: Date, endDate:Date, onChange: @escaping (Result<[TransactionModel], Error>) -> Void) -> ListenerRegistration? {
         let listener = userTransactionsCollection(userId: userId)
+            .whereField("date", isGreaterThanOrEqualTo: startDate)
+            .whereField("date", isLessThan: endDate)
             .order(by: "date", descending: true)
             .addSnapshotListener { snapshot, error in
                 if let e = error {

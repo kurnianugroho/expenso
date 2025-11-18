@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension Double {
     func asRupiah() -> String {
@@ -31,3 +32,21 @@ extension String {
         return filter { ("0" ... "9").contains($0) }
     }
 }
+
+extension UITextField {
+    func addDoneButton() {
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+
+        let flexible = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let done = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(donePressed))
+
+        toolbar.setItems([flexible, done], animated: false)
+        self.inputAccessoryView = toolbar
+    }
+
+    @objc private func donePressed() {
+        self.resignFirstResponder()
+    }
+}
+
