@@ -12,17 +12,9 @@ class AddTransactionViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet var amountTextField: UITextField!
     @IBOutlet var notesTextField: UITextField!
     @IBOutlet var timestampPicker: UIDatePicker!
-    @IBOutlet weak var backButton: UIButton!
-    
-    var onAddTransaction: ((TransactionModel) -> Void)?
+    @IBOutlet var backButton: UIButton!
 
-    var categories: [String] = [
-        "Food",
-        "Transportation",
-        "Utilities",
-        "Entertainment",
-        "Savings",
-    ]
+    var onAddTransaction: ((TransactionModel) -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,14 +25,14 @@ class AddTransactionViewController: UIViewController, UITextFieldDelegate {
 
         // Do any additional setup after loading the view.
         categoryButton.menu = UIMenu(
-            children: categories.map { category in
-                UIAction(title: category) { action in
+            children: categoryList.map { category in
+                UIAction(title: category.name) { action in
                     self.categoryButton.setTitle(action.title, for: .normal)
                 }
             },
         )
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
@@ -48,7 +40,6 @@ class AddTransactionViewController: UIViewController, UITextFieldDelegate {
         let isPortrait = view.bounds.height > view.bounds.width
         backButton.isHidden = isPortrait
     }
-
 
     override func touchesBegan(_: Set<UITouch>, with _: UIEvent?) {
         view.endEditing(true)
@@ -105,8 +96,8 @@ class AddTransactionViewController: UIViewController, UITextFieldDelegate {
             dismiss(animated: true)
         }
     }
-    
-    @IBAction func onBackTap(_ sender: Any) {
+
+    @IBAction func onBackTap(_: Any) {
         dismiss(animated: true)
     }
 }

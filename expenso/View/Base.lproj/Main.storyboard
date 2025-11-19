@@ -127,7 +127,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3vu-xD-JZx" userLabel="View Header">
-                                <rect key="frame" x="0.0" y="162" width="393" height="83.333333333333314"/>
+                                <rect key="frame" x="0.0" y="162" width="393" height="127.66666666666669"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cfc-oA-7XH" userLabel="View Header Top">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="1"/>
@@ -171,8 +171,18 @@
                                             </label>
                                         </subviews>
                                     </stackView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4t5-66-VnZ">
+                                        <rect key="frame" x="20" y="82.333333333333343" width="353" height="34.333333333333343"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="filled" title="Show Dashboard">
+                                            <color key="baseBackgroundColor" systemColor="systemOrangeColor"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="onShowDashboardTap:" destination="oyA-8m-DHV" eventType="touchUpInside" id="jSL-AD-JOv"/>
+                                        </connections>
+                                    </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Npr-yo-QuM" userLabel="View Header Bottom">
-                                        <rect key="frame" x="0.0" y="82.333333333333343" width="393" height="1"/>
+                                        <rect key="frame" x="0.0" y="126.66666666666669" width="393" height="1"/>
                                         <color key="backgroundColor" systemColor="systemTealColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="CzH-37-IX9"/>
@@ -187,17 +197,20 @@
                                     <constraint firstAttribute="trailing" secondItem="Npr-yo-QuM" secondAttribute="trailing" id="8JJ-Dj-LY6"/>
                                     <constraint firstItem="cfc-oA-7XH" firstAttribute="top" secondItem="3vu-xD-JZx" secondAttribute="top" id="8l2-G5-oqx"/>
                                     <constraint firstItem="ThZ-3P-xCA" firstAttribute="top" secondItem="B7A-6Y-5R4" secondAttribute="bottom" constant="8" id="8wO-It-8tM"/>
+                                    <constraint firstItem="4t5-66-VnZ" firstAttribute="leading" secondItem="3vu-xD-JZx" secondAttribute="leading" constant="20" id="D81-Nk-5Am"/>
                                     <constraint firstAttribute="trailing" secondItem="ThZ-3P-xCA" secondAttribute="trailing" constant="20" id="GAJ-WY-ZL6"/>
                                     <constraint firstItem="ThZ-3P-xCA" firstAttribute="leading" secondItem="3vu-xD-JZx" secondAttribute="leading" constant="20" id="Tbz-MV-JF8"/>
+                                    <constraint firstItem="4t5-66-VnZ" firstAttribute="top" secondItem="ThZ-3P-xCA" secondAttribute="bottom" constant="10" id="VFN-a4-TTg"/>
                                     <constraint firstAttribute="trailing" secondItem="B7A-6Y-5R4" secondAttribute="trailing" constant="20" id="bbR-lV-D5r"/>
+                                    <constraint firstItem="Npr-yo-QuM" firstAttribute="top" secondItem="4t5-66-VnZ" secondAttribute="bottom" constant="10" id="evF-JM-YQQ"/>
                                     <constraint firstItem="cfc-oA-7XH" firstAttribute="leading" secondItem="3vu-xD-JZx" secondAttribute="leading" id="nGI-Ta-wbf"/>
-                                    <constraint firstItem="Npr-yo-QuM" firstAttribute="top" secondItem="ThZ-3P-xCA" secondAttribute="bottom" constant="10" id="pet-Bf-UiJ"/>
                                     <constraint firstItem="B7A-6Y-5R4" firstAttribute="top" secondItem="cfc-oA-7XH" secondAttribute="bottom" constant="10" id="sNf-z6-3x9"/>
+                                    <constraint firstAttribute="trailing" secondItem="4t5-66-VnZ" secondAttribute="trailing" constant="20" id="udK-Mo-7Nd"/>
                                     <constraint firstItem="Npr-yo-QuM" firstAttribute="leading" secondItem="3vu-xD-JZx" secondAttribute="leading" id="v8P-Yt-0no"/>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="6fi-Ju-yRk">
-                                <rect key="frame" x="0.0" y="255.33333333333334" width="393" height="479.66666666666663"/>
+                                <rect key="frame" x="0.0" y="299.66666666666674" width="393" height="435.33333333333326"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="transactionCell" rowHeight="59" id="jK1-Cl-Pdc" customClass="TransactionTableViewCell" customModule="expenso" customModuleProvider="target">
@@ -287,8 +300,10 @@
                     </navigationItem>
                     <connections>
                         <outlet property="monthYearTextField" destination="uLQ-kp-VXg" id="OXB-GD-Uqy"/>
+                        <outlet property="showDashboardButton" destination="4t5-66-VnZ" id="c6S-Xn-Arf"/>
                         <outlet property="tableView" destination="6fi-Ju-yRk" id="Tth-IK-ggs"/>
                         <outlet property="totalSpentLabel" destination="fBc-tY-Td2" id="NKC-Gi-f4f"/>
+                        <segue destination="H0c-oK-ulV" kind="show" identifier="goToDashboard" id="zfE-OL-ikS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dfZ-fO-Zr1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -453,43 +468,40 @@
             </objects>
             <point key="canvasLocation" x="3300" y="776.76056338028172"/>
         </scene>
-        <!--Report-->
+        <!--Settings-->
         <scene sceneID="CFw-ib-Wba">
             <objects>
                 <navigationController id="Jte-i3-bCg" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Report" image="list.bullet.clipboard.fill" catalog="system" id="sTi-2w-6m4"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="gear" catalog="system" id="sTi-2w-6m4"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="OkP-Au-vZG">
                         <rect key="frame" x="0.0" y="118" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
-                    <connections>
-                        <segue destination="H0c-oK-ulV" kind="relationship" relationship="rootViewController" id="qkV-on-aAq"/>
-                    </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rlm-wz-G3H" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1714" y="1458"/>
         </scene>
-        <!--View Controller-->
+        <!--Expenso-->
         <scene sceneID="xhS-X2-P9G">
             <objects>
-                <viewController id="H0c-oK-ulV" sceneMemberID="viewController">
+                <viewController id="H0c-oK-ulV" customClass="DashboardViewController" customModule="expenso" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="xbj-51-ITW">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="OUX-id-zvG"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" id="go1-98-j0o"/>
+                    <navigationItem key="navigationItem" title="Expenso" style="editor" id="go1-98-j0o"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vco-fm-QNX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2514" y="1458"/>
+            <point key="canvasLocation" x="3300" y="55"/>
         </scene>
     </scenes>
     <resources>
         <image name="chevron.backward" catalog="system" width="97" height="128"/>
-        <image name="list.bullet.clipboard.fill" catalog="system" width="98" height="128"/>
+        <image name="gear" catalog="system" width="128" height="122"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="wallet.bifold.fill" catalog="system" width="128" height="104"/>
         <systemColor name="labelColor">

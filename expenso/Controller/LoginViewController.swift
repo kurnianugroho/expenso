@@ -9,9 +9,8 @@ import FirebaseAuth
 import UIKit
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
-    @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var passwordTextField: UITextField!
-    
+    @IBOutlet var emailTextField: UITextField!
+    @IBOutlet var passwordTextField: UITextField!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -126,7 +125,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         guard let tabBar = storyboard.instantiateViewController(withIdentifier: "MainTabBarController") as? UITabBarController else { return }
 
         // Optionally choose default selected tab
-        tabBar.selectedIndex = 0 // 0 = Expenses, 1 = Reports
+        tabBar.selectedIndex = 0 // 0 = Expenses, 1 = Settings
 
         if let navs = tabBar.viewControllers as? [UINavigationController] {
             if let expensesNav = navs.first,
@@ -135,9 +134,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 expensesVC.userId = userId
             }
 
-//            if let reportsNav = navs[1],
-//               let reportsVC = reportsNav.viewControllers.first as? ReportViewController {
-//                 reportsVC.someProperty = ...
+//            if let settingsNav = navs[1],
+//               let settingsVC = settingsNav.viewControllers.first as? SettingsViewController {
+//                 settingsVC.someProperty = ...
 //            }
         }
 

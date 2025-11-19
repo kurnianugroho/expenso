@@ -42,11 +42,10 @@ extension UITextField {
         let done = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(donePressed))
 
         toolbar.setItems([flexible, done], animated: false)
-        self.inputAccessoryView = toolbar
+        inputAccessoryView = toolbar
     }
 
     @objc private func donePressed() {
-        self.resignFirstResponder()
+        resignFirstResponder()
     }
 }
-

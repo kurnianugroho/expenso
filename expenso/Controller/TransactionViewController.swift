@@ -6,8 +6,8 @@
 //
 
 import FirebaseFirestore
-import UIKit
 import Foundation
+import UIKit
 
 class TransactionViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate {
     var txServices: TransactionServices?
@@ -28,12 +28,14 @@ class TransactionViewController: UIViewController, UITableViewDelegate, UITableV
             }
         }
     }
-    
-    //MARK: - UIViewController functions
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var monthYearTextField: UITextField!
-    @IBOutlet weak var totalSpentLabel: UILabel!
-    
+
+    // MARK: - UIViewController functions
+
+    @IBOutlet var tableView: UITableView!
+    @IBOutlet var monthYearTextField: UITextField!
+    @IBOutlet var totalSpentLabel: UILabel!
+    @IBOutlet var showDashboardButton: UIButton!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
@@ -46,7 +48,7 @@ class TransactionViewController: UIViewController, UITableViewDelegate, UITableV
                 .foregroundColor: UIColor.label,
             ]
         }
-        
+
         // Initialize start & end date
         let calendar = Calendar.current
         let dateComponents = calendar.dateComponents([.year, .month, .day], from: Date())
@@ -57,19 +59,19 @@ class TransactionViewController: UIViewController, UITableViewDelegate, UITableV
             day: 1,
         ).date
         endDate = Calendar.current.date(byAdding: .month, value: 1, to: startDate!)
-        
+
         // Setup period picker
         setupMonthYearPicker()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
+
+    override func viewWillAppear(_: Bool) {
         getTransactions()
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
+
+    override func viewWillDisappear(_: Bool) {
         disposeListener()
     }
-    
+
     private func getTransactions() {
         if let txServices = txServices {
             listener = txServices.listenTransactions(
@@ -79,14 +81,18 @@ class TransactionViewController: UIViewController, UITableViewDelegate, UITableV
                 switch result {
                 case let .success(txs):
                     self.transactions = txs
-                    self.totalSpentLabel.text = (txs.map {e in return e.amount}).reduce(0, +).asRupiah()
+
+                    let totalSpent = (txs.map { e in e.amount }).reduce(0, +)
+                    self.totalSpentLabel.text = totalSpent.asRupiah()
+                    self.showDashboardButton.isEnabled = totalSpent > 0
+
                 case let .failure(error):
                     self.showToast(message: error.localizedDescription)
                 }
             }
         }
     }
-    
+
     private func disposeListener() {
         listener?.remove()
         listener = nil
@@ -108,8 +114,9 @@ class TransactionViewController: UIViewController, UITableViewDelegate, UITableV
 
         return cell
     }
-    
-    //MARK: - Navigation Bar
+
+    // MARK: - Navigation Bar
+
     @IBAction func onAddButtonTap(_: UIBarButtonItem) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let addTransactionVC = storyboard.instantiateViewController(withIdentifier: "AddTransactionVC") as? AddTransactionViewController else { return }
@@ -139,17 +146,28 @@ class TransactionViewController: UIViewController, UITableViewDelegate, UITableV
 
         present(addTransactionVC, animated: true)
     }
-    
-    //MARK: - Picker View
+
+    // MARK: - Picker View
+
     let picker = UIPickerView()
     let months = Calendar.current.monthSymbols
-    let years = Array(2024...2035)
-    
+    let years = Array(2024 ... 2035)
+
     func setupMonthYearPicker() {
         monthYearTextField.inputView = picker
         monthYearTextField.tintColor = .clear
         picker.delegate = self
         picker.dataSource = self
+
+        let container = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 16))
+        let icon = UIImageView(image: UIImage(systemName: "chevron.up.chevron.down"))
+        icon.tintColor = .label
+        icon.contentMode = .left
+        icon.frame = container.bounds
+        container.addSubview(icon)
+
+        monthYearTextField.rightView = container
+        monthYearTextField.rightViewMode = .always
 
         // Preselect picker month/year
         let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: Date())
@@ -157,36 +175,36 @@ class TransactionViewController: UIViewController, UITableViewDelegate, UITableV
         let y = dateComponents.year ?? years.first!
 
         picker.selectRow(m - 1, inComponent: 0, animated: false)
-        
+
         if let yearIndex = years.firstIndex(of: y) {
             picker.selectRow(yearIndex, inComponent: 1, animated: false)
         }
 
         monthYearTextField.text = "\(months[m - 1]) \(y)"
-        
+
         // Tap outside to dismiss
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissPicker))
-        tap.cancelsTouchesInView = false  // important
+        tap.cancelsTouchesInView = false // important
         view.addGestureRecognizer(tap)
     }
-    
+
     @objc func dismissPicker() {
         view.endEditing(true)
     }
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+
+    func numberOfComponents(in _: UIPickerView) -> Int {
         return 2
     }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+
+    func pickerView(_: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return component == 0 ? months.count : years.count
     }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+
+    func pickerView(_: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return component == 0 ? months[row] : "\(years[row])"
     }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+
+    func pickerView(_ pickerView: UIPickerView, didSelectRow _: Int, inComponent _: Int) {
         let monthIndex = pickerView.selectedRow(inComponent: 0)
         let yearIndex = pickerView.selectedRow(inComponent: 1)
 
@@ -194,7 +212,7 @@ class TransactionViewController: UIViewController, UITableViewDelegate, UITableV
         let selectedYear = years[yearIndex]
 
         monthYearTextField.text = "\(selectedMonth) \(selectedYear)"
-        
+
         // Set new start & end date
         startDate = DateComponents(
             calendar: Calendar.current,
@@ -203,9 +221,22 @@ class TransactionViewController: UIViewController, UITableViewDelegate, UITableV
             day: 1,
         ).date
         endDate = Calendar.current.date(byAdding: .month, value: 1, to: startDate!)
-        
+
         // Refresh table view data source
         disposeListener()
         getTransactions()
+    }
+
+    // MARK: - Go To Dashboard
+
+    @IBAction func onShowDashboardTap(_: UIButton) {
+        performSegue(withIdentifier: "goToDashboard", sender: self)
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
+        if segue.identifier == "goToDashboard" {
+            let destinationVC = segue.destination as! DashboardViewController
+            destinationVC.transactionList = transactions
+        }
     }
 }
