@@ -41,14 +41,6 @@ class TransactionViewController: UIViewController, UITableViewDelegate, UITableV
         tableView.delegate = self
         tableView.dataSource = self
 
-        // Set navigation bar title's font
-        if let savoyeFont = UIFont(name: "SavoyeLetPlain", size: 36) {
-            navigationController?.navigationBar.titleTextAttributes = [
-                .font: savoyeFont,
-                .foregroundColor: UIColor.label,
-            ]
-        }
-
         // Initialize start & end date
         let calendar = Calendar.current
         let dateComponents = calendar.dateComponents([.year, .month, .day], from: Date())

@@ -17,14 +17,6 @@ class DashboardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Set navigation bar title's font
-        if let savoyeFont = UIFont(name: "SavoyeLetPlain", size: 36) {
-            navigationController?.navigationBar.titleTextAttributes = [
-                .font: savoyeFont,
-                .foregroundColor: UIColor.label,
-            ]
-        }
-
         // Initialize the aggregate list
         var aggregates: [CategoryAggregateModel] = []
         for category in categoryList {
@@ -55,7 +47,7 @@ class DashboardViewController: UIViewController {
         }
 
         // Embedding SwiftUI Chart into UIKit
-        let swiftUIView = DashboardChartView(aggregates: aggregates, weekly: weekly)
+        let swiftUIView = DashboardChartView(aggregates: aggregates, weekly: weekly, startDate: startDate ?? Date())
         let host = UIHostingController(rootView: swiftUIView)
         addChild(host)
         view.addSubview(host.view)
@@ -97,5 +89,44 @@ class DashboardViewController: UIViewController {
         }
 
         return weeks
+    }
+
+    @IBAction func onExportTap(_: UIBarButtonItem) {
+        savePDFToStorage()
+    }
+
+    private func exportViewToPDF() -> Data? {
+        guard let host = hostingController else { return nil }
+        let hostView = host.view!
+
+        // Calculate the full content size (critical!)
+        let targetSize = host.sizeThatFits(in: CGSize(
+            width: hostView.bounds.width,
+            height: .greatestFiniteMagnitude
+        ))
+
+        hostView.bounds = CGRect(origin: .zero, size: targetSize)
+        hostView.layoutIfNeeded()
+
+        let renderer = UIGraphicsPDFRenderer(bounds: CGRect(origin: .zero, size: targetSize))
+
+        let pdfData = renderer.pdfData { context in
+            context.beginPage()
+            hostView.layer.render(in: context.cgContext)
+        }
+
+        return pdfData
+    }
+
+    private func savePDFToStorage() {
+        if let data = exportViewToPDF() {
+            let url = FileManager.default
+                .temporaryDirectory
+                .appendingPathComponent("Charts.pdf")
+
+            try? data.write(to: url)
+            let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+            present(activityVC, animated: true)
+        }
     }
 }

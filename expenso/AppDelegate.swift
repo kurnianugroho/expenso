@@ -17,6 +17,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use Firebase library to configure APIs
         FirebaseApp.configure()
 
+        // Setting navigation bar appearance
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .bar
+        if let savoyeFont = UIFont(name: "SavoyeLetPlain", size: 36) {
+            appearance.titleTextAttributes = [.foregroundColor: UIColor.label, .font: savoyeFont]
+        }
+        // Apply the appearance globally
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        UINavigationBar.appearance().tintColor = .tertiaryAccent
+
         return true
     }
 

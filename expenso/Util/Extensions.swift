@@ -26,6 +26,12 @@ extension Date {
         return f.string(from: self)
     }
 
+    func formattedMonthYear() -> String {
+        let df = DateFormatter()
+        df.dateFormat = "MMMM YYYY"
+        return df.string(from: self)
+    }
+
     func formattedMonth() -> String {
         let df = DateFormatter()
         df.dateFormat = "MMM"

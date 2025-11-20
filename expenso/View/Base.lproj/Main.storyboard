@@ -4,6 +4,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="UIMenu" message="Requires Xcode 11 or later." minToolsVersion="11.0" requiredIntegratedClassName="UICommandDiff"/>
@@ -26,18 +27,23 @@
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="user@gmail.com" borderStyle="roundedRect" placeholder="email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ARH-St-uHJ">
                                 <rect key="frame" x="30" y="259.33333333333331" width="333" height="34"/>
+                                <color key="backgroundColor" name="TextFieldBackground"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="next"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="qwerty" borderStyle="roundedRect" placeholder="password" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="l6I-UJ-hFq">
                                 <rect key="frame" x="30" y="313.33333333333331" width="333" height="34"/>
+                                <color key="backgroundColor" name="TextFieldBackground"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="go" secureTextEntry="YES" textContentType="password"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rNo-xN-qvr">
                                 <rect key="frame" x="30" y="729" width="333" height="35"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Log Me In"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Log Me In">
+                                    <color key="baseForegroundColor" systemColor="labelColor"/>
+                                    <color key="baseBackgroundColor" name="PrimaryAccent"/>
+                                </buttonConfiguration>
                                 <connections>
                                     <action selector="onLoginTap:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ZEj-lx-LVT"/>
                                 </connections>
@@ -46,7 +52,8 @@
                                 <rect key="frame" x="30" y="684" width="333" height="35"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Sign Me Up">
-                                    <color key="baseBackgroundColor" systemColor="systemOrangeColor"/>
+                                    <color key="baseForegroundColor" systemColor="labelColor"/>
+                                    <color key="baseBackgroundColor" name="SecondaryAccent"/>
                                 </buttonConfiguration>
                                 <connections>
                                     <action selector="onSignupTap:" destination="BYZ-38-t0r" eventType="touchUpInside" id="5rL-9Z-N2I"/>
@@ -90,6 +97,8 @@
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="R5X-25-oM7">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" name="BarColor"/>
+                        <color key="selectedImageTintColor" name="TertiaryAccent"/>
                     </tabBar>
                     <connections>
                         <segue destination="NWT-EH-czi" kind="relationship" relationship="viewControllers" id="9Gh-0t-Ow7"/>
@@ -109,6 +118,9 @@
                         <rect key="frame" x="0.0" y="118" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Y8H-kV-ALp">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="oyA-8m-DHV" kind="relationship" relationship="rootViewController" id="toi-7f-AAm"/>
                     </connections>
@@ -128,7 +140,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3vu-xD-JZx" userLabel="View Header">
                                 <rect key="frame" x="0.0" y="162" width="393" height="127.66666666666669"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cfc-oA-7XH" userLabel="View Header Top">
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cfc-oA-7XH" userLabel="View Header Top">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="1"/>
                                         <color key="backgroundColor" systemColor="systemTealColor"/>
                                         <constraints>
@@ -146,7 +158,7 @@
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uLQ-kp-VXg">
                                                 <rect key="frame" x="186.66666666666663" y="0.0" width="166.33333333333337" height="34"/>
-                                                <color key="backgroundColor" red="1" green="0.57637232540000005" blue="0.0" alpha="0.20291241500000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" name="TextFieldBackground"/>
                                                 <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="1"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <textInputTraits key="textInputTraits"/>
@@ -174,7 +186,8 @@
                                         <rect key="frame" x="20" y="82.333333333333343" width="353" height="34.333333333333343"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="filled" title="Show Dashboard">
-                                            <color key="baseBackgroundColor" systemColor="systemOrangeColor"/>
+                                            <color key="baseForegroundColor" systemColor="labelColor"/>
+                                            <color key="baseBackgroundColor" name="PrimaryAccent"/>
                                         </buttonConfiguration>
                                         <connections>
                                             <action selector="onShowDashboardTap:" destination="oyA-8m-DHV" eventType="touchUpInside" id="jSL-AD-JOv"/>
@@ -182,7 +195,7 @@
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Npr-yo-QuM" userLabel="View Header Bottom">
                                         <rect key="frame" x="0.0" y="126.66666666666669" width="393" height="1"/>
-                                        <color key="backgroundColor" systemColor="systemTealColor"/>
+                                        <color key="backgroundColor" name="TextHighlight"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="CzH-37-IX9"/>
                                         </constraints>
@@ -226,15 +239,15 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="353" height="19.333333333333332"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="icm-dj-6kt">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="290" height="19.333333333333332"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="288.33333333333331" height="19.333333333333332"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Amount" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hkC-ob-pnr">
-                                                                    <rect key="frame" x="296" y="0.0" width="57" height="19.333333333333332"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                                    <color key="textColor" systemColor="systemTealColor"/>
+                                                                    <rect key="frame" x="294.33333333333331" y="0.0" width="58.666666666666686" height="19.333333333333332"/>
+                                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                                                    <color key="textColor" name="TextHighlight"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                             </subviews>
@@ -290,8 +303,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Expenso" largeTitleDisplayMode="always" id="r84-VX-GGU">
-                        <barButtonItem key="rightBarButtonItem" id="7Xh-pe-RzU">
-                            <imageReference key="image" image="plus" catalog="system" symbolScale="medium"/>
+                        <barButtonItem key="rightBarButtonItem" title="Item" style="plain" id="7Xh-pe-RzU">
+                            <imageReference key="image" image="plus.square.fill.on.square.fill" catalog="system" symbolScale="large"/>
+                            <color key="tintColor" name="TertiaryAccent"/>
                             <connections>
                                 <action selector="onAddButtonTap:" destination="oyA-8m-DHV" id="8as-9I-OIQ"/>
                             </connections>
@@ -313,7 +327,13 @@
         <scene sceneID="UAw-Ld-YQl">
             <objects>
                 <viewController id="k4A-c9-NVB" customClass="DashboardViewController" customModule="expenso" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" title="Expenso" style="editor" id="My7-AY-hns"/>
+                    <navigationItem key="navigationItem" title="Expenso" style="editor" id="My7-AY-hns">
+                        <barButtonItem key="rightBarButtonItem" image="square.and.arrow.up.fill" catalog="system" style="plain" id="j8q-IW-0md">
+                            <connections>
+                                <action selector="onExportTap:" destination="k4A-c9-NVB" id="E6r-fp-qTn"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JGw-K0-d7q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -335,8 +355,11 @@
                                         <constraints>
                                             <constraint firstAttribute="width" constant="36" id="3IZ-25-xPt"/>
                                         </constraints>
+                                        <color key="tintColor" name="TertiaryAccent"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" image="chevron.backward" catalog="system" buttonSize="small"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="chevron.backward" catalog="system" buttonSize="small">
+                                            <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" weight="bold"/>
+                                        </buttonConfiguration>
                                         <connections>
                                             <action selector="onBackTap:" destination="y2V-2I-t7c" eventType="touchUpInside" id="XWA-73-yt0"/>
                                         </connections>
@@ -367,7 +390,7 @@
                                                     <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" changesSelectionAsPrimaryAction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zAs-qI-yqy">
                                                         <rect key="frame" x="0.0" y="34.333333333333343" width="333" height="34.333333333333343"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                        <color key="tintColor" systemColor="systemOrangeColor"/>
+                                                        <color key="tintColor" name="TextFieldBackground"/>
                                                         <inset key="contentEdgeInsets" minX="20" minY="10" maxX="0.0" maxY="10"/>
                                                         <menu key="menu" id="PZj-hv-mJA">
                                                             <children>
@@ -376,7 +399,7 @@
                                                             </children>
                                                         </menu>
                                                         <state key="normal" title="Button"/>
-                                                        <buttonConfiguration key="configuration" style="tinted" title="Button">
+                                                        <buttonConfiguration key="configuration" style="filled" title="Button">
                                                             <fontDescription key="titleFontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="16"/>
                                                             <color key="baseForegroundColor" systemColor="labelColor"/>
                                                         </buttonConfiguration>
@@ -389,7 +412,7 @@
                                                     </label>
                                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="How much?" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="1U4-g9-Ifr">
                                                         <rect key="frame" x="0.0" y="118" width="333" height="34"/>
-                                                        <color key="backgroundColor" red="1" green="0.57637232540000005" blue="0.0" alpha="0.20291241496598639" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="backgroundColor" name="TextFieldBackground"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                         <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
                                                     </textField>
@@ -401,7 +424,7 @@
                                                     </label>
                                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Wanna put some details?" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="GAw-qn-nDw">
                                                         <rect key="frame" x="0.0" y="201.33333333333331" width="333" height="34"/>
-                                                        <color key="backgroundColor" red="1" green="0.57637232540000005" blue="0.0" alpha="0.20291241500000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="backgroundColor" name="TextFieldBackground"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                         <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                                     </textField>
@@ -424,7 +447,10 @@
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oh6-Er-ku1">
                                                         <rect key="frame" x="0.0" y="369.66666666666663" width="333" height="34.333333333333314"/>
                                                         <state key="normal" title="Button"/>
-                                                        <buttonConfiguration key="configuration" style="filled" title="Submit"/>
+                                                        <buttonConfiguration key="configuration" style="filled" title="Submit">
+                                                            <color key="baseForegroundColor" systemColor="labelColor"/>
+                                                            <color key="baseBackgroundColor" name="PrimaryAccent"/>
+                                                        </buttonConfiguration>
                                                         <connections>
                                                             <action selector="onSubmitTap:" destination="y2V-2I-t7c" eventType="touchUpInside" id="nbf-Y4-Wa4"/>
                                                         </connections>
@@ -495,16 +521,32 @@
     <resources>
         <image name="chevron.backward" catalog="system" width="97" height="128"/>
         <image name="gear" catalog="system" width="128" height="122"/>
-        <image name="plus" catalog="system" width="128" height="113"/>
+        <image name="plus.square.fill.on.square.fill" catalog="system" width="128" height="120"/>
+        <image name="square.and.arrow.up.fill" catalog="system" width="117" height="128"/>
         <image name="wallet.bifold.fill" catalog="system" width="128" height="104"/>
+        <namedColor name="BarColor">
+            <color white="0.9171789288520813" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </namedColor>
+        <namedColor name="PrimaryAccent">
+            <color red="0.8666666666666667" green="0.87058823529411766" blue="0.40784313725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="SecondaryAccent">
+            <color red="0.6470588235294118" green="0.69803921568627447" blue="0.92156862745098034" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TertiaryAccent">
+            <color red="0.85490196078431369" green="0.57647058823529407" blue="0.36470588235294116" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TextFieldBackground">
+            <color red="0.95294117647058818" green="0.95686274509803926" blue="0.98431372549019602" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TextHighlight">
+            <color red="0.33333333333333331" green="0.37647058823529411" blue="0.69411764705882351" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemOrangeColor">
-            <color red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemTealColor">
             <color red="0.18823529410000001" green="0.69019607839999997" blue="0.78039215689999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
