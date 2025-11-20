@@ -10,6 +10,7 @@ import UIKit
 
 class DashboardViewController: UIViewController {
     var transactionList: [TransactionModel]?
+    var startDate: Date?
 
     private var hostingController: UIHostingController<DashboardChartView>?
 
@@ -24,9 +25,8 @@ class DashboardViewController: UIViewController {
             ]
         }
 
-        // Calculate category aggregates
-        var aggregates: [CategoryAggregateModel] = []
         // Initialize the aggregate list
+        var aggregates: [CategoryAggregateModel] = []
         for category in categoryList {
             aggregates.append(CategoryAggregateModel(category: category, total: 0.0))
         }
@@ -39,8 +39,23 @@ class DashboardViewController: UIViewController {
             }
         }
 
+        // Initialize weekly expenses
+        var weekly: [WeeklyExpenseModel] = []
+        let weeksInMonth = weeksInMonth(of: startDate ?? Date())
+        for dates in weeksInMonth {
+            weekly.append(WeeklyExpenseModel(startDate: dates.start, endDate: dates.end, total: 0.0))
+        }
+        // Populate the weekly expenses
+        transactionList?.forEach { tx in
+            if let index = weeksInMonth.firstIndex(where: { week in
+                tx.date >= week.start && tx.date <= week.end
+            }) {
+                weekly[index].total += tx.amount
+            }
+        }
+
         // Embedding SwiftUI Chart into UIKit
-        let swiftUIView = DashboardChartView(aggregates: aggregates)
+        let swiftUIView = DashboardChartView(aggregates: aggregates, weekly: weekly)
         let host = UIHostingController(rootView: swiftUIView)
         addChild(host)
         view.addSubview(host.view)
@@ -49,8 +64,38 @@ class DashboardViewController: UIViewController {
             host.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             host.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             host.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            host.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
         host.didMove(toParent: self)
         hostingController = host
+    }
+
+    private func weeksInMonth(of date: Date) -> [(start: Date, end: Date)] {
+        let calendar = Calendar.current
+
+        // Start of month
+        guard let monthInterval = calendar.dateInterval(of: .month, for: date) else {
+            return []
+        }
+
+        var weeks: [(Date, Date)] = []
+
+        var weekStart = monthInterval.start
+
+        while weekStart < monthInterval.end {
+            guard let weekInterval = calendar.dateInterval(of: .weekOfYear, for: weekStart) else { break }
+
+            // Determine start & end of week considering start & end of month
+            let start = max(weekInterval.start, monthInterval.start)
+            let end = min(weekInterval.end, monthInterval.end)
+
+            weeks.append((start, end))
+
+            // Move to next week
+            guard let nextWeek = calendar.date(byAdding: .weekOfYear, value: 1, to: weekStart) else { break }
+            weekStart = nextWeek
+        }
+
+        return weeks
     }
 }

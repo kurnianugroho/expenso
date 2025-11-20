@@ -237,6 +237,7 @@ class TransactionViewController: UIViewController, UITableViewDelegate, UITableV
         if segue.identifier == "goToDashboard" {
             let destinationVC = segue.destination as! DashboardViewController
             destinationVC.transactionList = transactions
+            destinationVC.startDate = startDate
         }
     }
 }

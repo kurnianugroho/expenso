@@ -25,6 +25,18 @@ extension Date {
         f.timeStyle = .short
         return f.string(from: self)
     }
+
+    func formattedMonth() -> String {
+        let df = DateFormatter()
+        df.dateFormat = "MMM"
+        return df.string(from: self)
+    }
+
+    func formattedDay() -> String {
+        let df = DateFormatter()
+        df.dateFormat = "d"
+        return df.string(from: self)
+    }
 }
 
 extension String {
