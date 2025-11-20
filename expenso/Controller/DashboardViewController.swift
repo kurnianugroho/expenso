@@ -69,10 +69,12 @@ class DashboardViewController: UIViewController {
         guard let monthInterval = calendar.dateInterval(of: .month, for: date) else {
             return []
         }
+        
+        guard var weekStart = calendar.dateInterval(of: .weekOfYear, for: date)?.start else {
+            return []
+        }
 
         var weeks: [(Date, Date)] = []
-
-        var weekStart = monthInterval.start
 
         while weekStart < monthInterval.end {
             guard let weekInterval = calendar.dateInterval(of: .weekOfYear, for: weekStart) else { break }
@@ -81,7 +83,7 @@ class DashboardViewController: UIViewController {
             let start = max(weekInterval.start, monthInterval.start)
             let end = min(weekInterval.end, monthInterval.end)
 
-            weeks.append((start, end))
+            weeks.append((start, end.addingTimeInterval(-1)))
 
             // Move to next week
             guard let nextWeek = calendar.date(byAdding: .weekOfYear, value: 1, to: weekStart) else { break }
@@ -122,7 +124,7 @@ class DashboardViewController: UIViewController {
         if let data = exportViewToPDF() {
             let url = FileManager.default
                 .temporaryDirectory
-                .appendingPathComponent("Charts.pdf")
+                .appendingPathComponent("Expenso_\((startDate?.formattedMonthYear() ?? "").replacingOccurrences(of: " ", with: "_")).pdf")
 
             try? data.write(to: url)
             let activityVC = UIActivityViewController(activityItems: [url], applicationActivities: nil)

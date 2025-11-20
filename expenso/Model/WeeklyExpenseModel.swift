@@ -13,3 +13,16 @@ struct WeeklyExpenseModel: Identifiable {
     let endDate: Date
     var total: Double
 }
+
+extension WeeklyExpenseModel {
+    var weekLabel: String {
+        let calendar = Calendar.current
+        
+        let start = "\(startDate.formattedMonth())\n\(startDate.formattedDay())"
+        let end = calendar.component(.day, from: startDate) == calendar.component(.day, from: endDate)
+            ? ""
+            : "-\(endDate.formattedDay())"
+        return start + end
+    }
+}
+

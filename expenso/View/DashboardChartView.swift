@@ -22,11 +22,12 @@ struct DashboardChartView: View {
             VStack(alignment: .leading, spacing: 16) {
                 Text("In \(startDate.formattedMonthYear()), you spent \(grandTotal.asRupiah())")
                     .font(.headline)
+                    .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.horizontal, 16)
                     .padding(.top, 16)
-
+                
                 DotDivider()
-
+                
                 VStack(alignment: .leading, spacing: 16) {
                     Text("Spending by Category")
                         .font(.callout)
@@ -82,7 +83,7 @@ struct DashboardChartView: View {
                     Chart {
                         ForEach(weekly) { week in
                             BarMark(
-                                x: .value("Week", "\(week.startDate.formattedMonth())\n\(week.startDate.formattedDay())-\(week.endDate.formattedDay())"),
+                                x: .value("Week", week.weekLabel),
                                 y: .value("Total", week.total)
                             )
                             .foregroundStyle(Color("TextHighlight"))
