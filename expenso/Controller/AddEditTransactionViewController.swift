@@ -7,14 +7,18 @@
 
 import UIKit
 
-class AddTransactionViewController: UIViewController, UITextFieldDelegate {
+class AddEditTransactionViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet var categoryButton: UIButton!
     @IBOutlet var amountTextField: UITextField!
     @IBOutlet var notesTextField: UITextField!
     @IBOutlet var timestampPicker: UIDatePicker!
     @IBOutlet var backButton: UIButton!
-
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var actionButton: UIButton!
+    
     var onAddTransaction: ((TransactionModel) -> Void)?
+    var onEditTransaction: ((TransactionModel) -> Void)?
+    var initialTransaction: TransactionModel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +35,20 @@ class AddTransactionViewController: UIViewController, UITextFieldDelegate {
                 }
             },
         )
+        
+        // Fill form with data for edit mode
+        if let initialTransaction = initialTransaction {
+            let categoryIndex = categoryList.firstIndex(where: {cat in cat.name == initialTransaction.category})
+            if (categoryIndex != nil) {
+                (categoryButton.menu?.children[categoryIndex!] as? UIAction)?.state = .on
+                categoryButton.setTitle(initialTransaction.category, for: .normal)
+            }
+            amountTextField.text = initialTransaction.amount.asRupiah()
+            notesTextField.text = initialTransaction.note
+            timestampPicker.date = initialTransaction.date
+            titleLabel.text = "Edit Expense"
+            actionButton.setTitle( "Save", for: .normal)
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -86,13 +104,20 @@ class AddTransactionViewController: UIViewController, UITextFieldDelegate {
             )
         } else {
             let newTx = TransactionModel(
+                id: initialTransaction?.id ?? UUID().uuidString,
                 amount: amount,
                 category: categoryButton.currentTitle!,
                 date: timestampPicker.date,
                 note: notesTextField.text ?? "",
+                userId: initialTransaction?.userId,
             )
-
-            onAddTransaction?(newTx)
+            
+            if (initialTransaction == nil) {
+                onAddTransaction?(newTx)
+            } else {
+                onEditTransaction?(newTx)
+            }
+            
             dismiss(animated: true)
         }
     }

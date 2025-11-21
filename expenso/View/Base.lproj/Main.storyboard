@@ -339,10 +339,10 @@
             </objects>
             <point key="canvasLocation" x="3300" y="72"/>
         </scene>
-        <!--Add Transaction View Controller-->
+        <!--Add Edit Transaction View Controller-->
         <scene sceneID="vCU-jv-NlR">
             <objects>
-                <viewController storyboardIdentifier="AddTransactionVC" id="y2V-2I-t7c" customClass="AddTransactionViewController" customModule="expenso" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddEditTransactionVC" id="y2V-2I-t7c" customClass="AddEditTransactionViewController" customModule="expenso" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="rrT-hX-bGN">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -492,11 +492,13 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="actionButton" destination="oh6-Er-ku1" id="9Ja-gn-QGz"/>
                         <outlet property="amountTextField" destination="1U4-g9-Ifr" id="Ztp-Wz-Uql"/>
                         <outlet property="backButton" destination="Nnt-HP-Fxm" id="hHa-tY-Uwh"/>
                         <outlet property="categoryButton" destination="zAs-qI-yqy" id="kul-m9-628"/>
                         <outlet property="notesTextField" destination="GAw-qn-nDw" id="Gtt-ug-XnQ"/>
                         <outlet property="timestampPicker" destination="Do8-Fq-Jjo" id="TD7-4q-ifc"/>
+                        <outlet property="titleLabel" destination="LYs-BV-VZv" id="kO5-ct-zCy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T0r-ZN-hHi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

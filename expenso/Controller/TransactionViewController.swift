@@ -134,15 +134,65 @@ class TransactionViewController: UIViewController, UITableViewDelegate, UITableV
 
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == .delete) {
+            self.txServices?.deleteTransaction(transactions![indexPath.row].id) { result in
+                if case let .failure(error) = result {
+                    self.showToast(
+                        message: error.localizedDescription,
+                        backgroundColor: .red,
+                    )
+                }
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        if let initialTx = transactions?[indexPath.row] {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            guard let addEditTransactionVC = storyboard.instantiateViewController(withIdentifier: "AddEditTransactionVC") as? AddEditTransactionViewController else { return }
+
+            addEditTransactionVC.modalPresentationStyle = .pageSheet
+            if let sheet = addEditTransactionVC.sheetPresentationController {
+                sheet.detents = [
+                    UISheetPresentationController.Detent.custom { context in
+                        context.maximumDetentValue * 0.65
+                    },
+                ]
+                sheet.prefersGrabberVisible = true
+            }
+
+            addEditTransactionVC.initialTransaction = initialTx
+            
+            addEditTransactionVC.onEditTransaction = { tx in
+                self.txServices?.updateTransaction(tx) { result in
+                    if case let .failure(error) = result {
+                        self.showToast(
+                            message: error.localizedDescription,
+                            backgroundColor: .red,
+                        )
+                    }
+                }
+            }
+            
+            present(addEditTransactionVC, animated: true)
+        }
+    }
 
     // MARK: - Navigation Bar
 
     @IBAction func onAddButtonTap(_: UIBarButtonItem) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        guard let addTransactionVC = storyboard.instantiateViewController(withIdentifier: "AddTransactionVC") as? AddTransactionViewController else { return }
+        guard let addEditTransactionVC = storyboard.instantiateViewController(withIdentifier: "AddEditTransactionVC") as? AddEditTransactionViewController else { return }
 
-        addTransactionVC.modalPresentationStyle = .pageSheet
-        if let sheet = addTransactionVC.sheetPresentationController {
+        addEditTransactionVC.modalPresentationStyle = .pageSheet
+        if let sheet = addEditTransactionVC.sheetPresentationController {
             sheet.detents = [
                 UISheetPresentationController.Detent.custom { context in
                     context.maximumDetentValue * 0.65
@@ -151,7 +201,7 @@ class TransactionViewController: UIViewController, UITableViewDelegate, UITableV
             sheet.prefersGrabberVisible = true
         }
 
-        addTransactionVC.onAddTransaction = { tx in
+        addEditTransactionVC.onAddTransaction = { tx in
             var modifiedTx = tx
             modifiedTx.userId = self.userId
             self.txServices?.addTransaction(modifiedTx) { result in
@@ -164,7 +214,7 @@ class TransactionViewController: UIViewController, UITableViewDelegate, UITableV
             }
         }
 
-        present(addTransactionVC, animated: true)
+        present(addEditTransactionVC, animated: true)
     }
 
     // MARK: - Picker View
