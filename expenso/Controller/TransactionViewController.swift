@@ -134,14 +134,14 @@ class TransactionViewController: UIViewController, UITableViewDelegate, UITableV
 
         return cell
     }
-    
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+
+    func tableView(_: UITableView, canEditRowAt _: IndexPath) -> Bool {
         return true
     }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if (editingStyle == .delete) {
-            self.txServices?.deleteTransaction(transactions![indexPath.row].id) { result in
+
+    func tableView(_: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            txServices?.deleteTransaction(transactions![indexPath.row].id) { result in
                 if case let .failure(error) = result {
                     self.showToast(
                         message: error.localizedDescription,
@@ -151,7 +151,7 @@ class TransactionViewController: UIViewController, UITableViewDelegate, UITableV
             }
         }
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if let initialTx = transactions?[indexPath.row] {
@@ -169,7 +169,7 @@ class TransactionViewController: UIViewController, UITableViewDelegate, UITableV
             }
 
             addEditTransactionVC.initialTransaction = initialTx
-            
+
             addEditTransactionVC.onEditTransaction = { tx in
                 self.txServices?.updateTransaction(tx) { result in
                     if case let .failure(error) = result {
@@ -180,7 +180,7 @@ class TransactionViewController: UIViewController, UITableViewDelegate, UITableV
                     }
                 }
             }
-            
+
             present(addEditTransactionVC, animated: true)
         }
     }

@@ -1,5 +1,5 @@
 //
-//  AddTransactionViewController.swift
+//  AddEditTransactionViewController.swift
 //  expenso
 //
 //  Created by Kurnia Adi Nugroho on 16/11/25.
@@ -13,9 +13,9 @@ class AddEditTransactionViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet var notesTextField: UITextField!
     @IBOutlet var timestampPicker: UIDatePicker!
     @IBOutlet var backButton: UIButton!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var actionButton: UIButton!
-    
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var actionButton: UIButton!
+
     var onAddTransaction: ((TransactionModel) -> Void)?
     var onEditTransaction: ((TransactionModel) -> Void)?
     var initialTransaction: TransactionModel?
@@ -35,11 +35,11 @@ class AddEditTransactionViewController: UIViewController, UITextFieldDelegate {
                 }
             },
         )
-        
+
         // Fill form with data for edit mode
         if let initialTransaction = initialTransaction {
-            let categoryIndex = categoryList.firstIndex(where: {cat in cat.name == initialTransaction.category})
-            if (categoryIndex != nil) {
+            let categoryIndex = categoryList.firstIndex(where: { cat in cat.name == initialTransaction.category })
+            if categoryIndex != nil {
                 (categoryButton.menu?.children[categoryIndex!] as? UIAction)?.state = .on
                 categoryButton.setTitle(initialTransaction.category, for: .normal)
             }
@@ -47,7 +47,7 @@ class AddEditTransactionViewController: UIViewController, UITextFieldDelegate {
             notesTextField.text = initialTransaction.note
             timestampPicker.date = initialTransaction.date
             titleLabel.text = "Edit Expense"
-            actionButton.setTitle( "Save", for: .normal)
+            actionButton.setTitle("Save", for: .normal)
         }
     }
 
@@ -111,13 +111,13 @@ class AddEditTransactionViewController: UIViewController, UITextFieldDelegate {
                 note: notesTextField.text ?? "",
                 userId: initialTransaction?.userId,
             )
-            
-            if (initialTransaction == nil) {
+
+            if initialTransaction == nil {
                 onAddTransaction?(newTx)
             } else {
                 onEditTransaction?(newTx)
             }
-            
+
             dismiss(animated: true)
         }
     }
