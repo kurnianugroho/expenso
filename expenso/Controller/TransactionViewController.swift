@@ -29,6 +29,9 @@ class TransactionViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
 
+    private var lastMonthTotal: Double?
+    private var oneBeforeLastMonthTotal: Double?
+
     // MARK: - UIViewController functions
 
     @IBOutlet var tableView: UITableView!
@@ -64,6 +67,8 @@ class TransactionViewController: UIViewController, UITableViewDelegate, UITableV
         disposeListener()
     }
 
+    // MARK: - Transaction Services
+
     private func getTransactions() {
         if let txServices = txServices {
             listener = txServices.listenTransactions(
@@ -88,6 +93,29 @@ class TransactionViewController: UIViewController, UITableViewDelegate, UITableV
     private func disposeListener() {
         listener?.remove()
         listener = nil
+    }
+
+    private func getTotalExpenses(monthsAgo diff: Int) async -> Double {
+        var lastMonthTotal: Double = 0
+
+        var month = startDate!.getXMonthAgo(x: diff).getMonth()
+        if month <= 0 {
+            month += 12
+        }
+        let year = startDate!.getXYearAgo(x: month > startDate!.getMonth() ? 1 : 0).getYear()
+
+        do {
+            if let txServices = txServices {
+                lastMonthTotal = try await txServices.fetchTransactions(
+                    year: year,
+                    month: month
+                ).map { tx in tx.amount }.reduce(0, +)
+            }
+        } catch {
+            showToast(message: error.localizedDescription)
+        }
+
+        return lastMonthTotal
     }
 
     // MARK: - Table View
@@ -222,7 +250,11 @@ class TransactionViewController: UIViewController, UITableViewDelegate, UITableV
     // MARK: - Go To Dashboard
 
     @IBAction func onShowDashboardTap(_: UIButton) {
-        performSegue(withIdentifier: "goToDashboard", sender: self)
+        Task {
+            lastMonthTotal = await getTotalExpenses(monthsAgo: 1)
+            oneBeforeLastMonthTotal = await getTotalExpenses(monthsAgo: 2)
+            performSegue(withIdentifier: "goToDashboard", sender: self)
+        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
@@ -230,6 +262,8 @@ class TransactionViewController: UIViewController, UITableViewDelegate, UITableV
             let destinationVC = segue.destination as! DashboardViewController
             destinationVC.transactionList = transactions
             destinationVC.startDate = startDate
+            destinationVC.lastMonthTotal = lastMonthTotal
+            destinationVC.oneBeforeLastMonthTotal = oneBeforeLastMonthTotal
         }
     }
 }

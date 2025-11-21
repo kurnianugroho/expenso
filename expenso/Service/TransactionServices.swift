@@ -69,23 +69,26 @@ class TransactionServices {
         return listener
     }
 
-    // MARK: - Query by month (example)
+    // MARK: - One-time fetch
 
-    func fetchTransactions(year: Int, month: Int, completion: @escaping (Result<[TransactionModel], Error>) -> Void) {
+    func fetchTransactions(year: Int, month: Int) async throws -> [TransactionModel] {
         let calendar = Calendar.current
         var comps = DateComponents(); comps.year = year; comps.month = month; comps.day = 1
-        guard let start = calendar.date(from: comps) else { completion(.success([])); return }
+        guard let start = calendar.date(from: comps) else { return [] }
         var add = DateComponents(); add.month = 1
         let end = calendar.date(byAdding: add, to: start)!
 
         let col = userTransactionsCollection(userId: userId)
-        col.whereField("date", isGreaterThanOrEqualTo: Timestamp(date: start))
-            .whereField("date", isLessThan: Timestamp(date: end))
-            .order(by: "date", descending: true)
-            .getDocuments { snapshot, error in
-                if let e = error { completion(.failure(e)); return }
-                let txs = snapshot?.documents.compactMap { TransactionModel.from(document: $0) } ?? []
-                completion(.success(txs))
-            }
+
+        return try await withCheckedThrowingContinuation { continuation in
+            col.whereField("date", isGreaterThanOrEqualTo: Timestamp(date: start))
+                .whereField("date", isLessThan: Timestamp(date: end))
+                .order(by: "date", descending: true)
+                .getDocuments { snapshot, error in
+                    if let e = error { continuation.resume(throwing: e); return }
+                    let txs = snapshot?.documents.compactMap { TransactionModel.from(document: $0) } ?? []
+                    continuation.resume(returning: txs)
+                }
+        }
     }
 }

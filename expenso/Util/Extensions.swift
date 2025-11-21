@@ -43,6 +43,26 @@ extension Date {
         df.dateFormat = "d"
         return df.string(from: self)
     }
+
+    func getYear() -> Int {
+        return Calendar.current.component(.year, from: self)
+    }
+
+    func getMonth() -> Int {
+        return Calendar.current.component(.month, from: self)
+    }
+
+    func getXMonthAgo(x: Int) -> Date {
+        var dateComponents = DateComponents()
+        dateComponents.month = -x
+        return Calendar.current.date(byAdding: dateComponents, to: self)!
+    }
+
+    func getXYearAgo(x: Int) -> Date {
+        var dateComponents = DateComponents()
+        dateComponents.year = -x
+        return Calendar.current.date(byAdding: dateComponents, to: self)!
+    }
 }
 
 extension String {

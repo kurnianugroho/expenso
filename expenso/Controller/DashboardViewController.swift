@@ -11,11 +11,20 @@ import UIKit
 class DashboardViewController: UIViewController {
     var transactionList: [TransactionModel]?
     var startDate: Date?
+    var lastMonthTotal: Double?
+    var oneBeforeLastMonthTotal: Double?
 
     private var hostingController: UIHostingController<DashboardChartView>?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        guard let startDate = startDate,
+              let lastMonthTotal = lastMonthTotal,
+              let oneBeforeLastMonthTotal = oneBeforeLastMonthTotal
+        else {
+            return
+        }
 
         // Initialize the aggregate list
         var aggregates: [CategoryAggregateModel] = []
@@ -33,7 +42,7 @@ class DashboardViewController: UIViewController {
 
         // Initialize weekly expenses
         var weekly: [WeeklyExpenseModel] = []
-        let weeksInMonth = weeksInMonth(of: startDate ?? Date())
+        let weeksInMonth = weeksInMonth(of: startDate)
         for dates in weeksInMonth {
             weekly.append(WeeklyExpenseModel(startDate: dates.start, endDate: dates.end, total: 0.0))
         }
@@ -46,8 +55,21 @@ class DashboardViewController: UIViewController {
             }
         }
 
+        // Get transactions for last 3 months
+        let trends: [MonthlyExpenseModel] = [
+            MonthlyExpenseModel(index: 0, date: startDate.getXMonthAgo(x: 2), total: oneBeforeLastMonthTotal),
+            MonthlyExpenseModel(index: 1, date: startDate.getXMonthAgo(x: 1), total: lastMonthTotal),
+            MonthlyExpenseModel(index: 2, date: startDate, total: aggregates.map { agg in agg.total }.reduce(0, +)),
+        ]
+
         // Embedding SwiftUI Chart into UIKit
-        let swiftUIView = DashboardChartView(aggregates: aggregates, weekly: weekly, startDate: startDate ?? Date())
+        let swiftUIView = DashboardChartView(
+            aggregates: aggregates,
+            weekly: weekly,
+            trends: trends,
+            startDate: startDate,
+            exportMode: false,
+        )
         let host = UIHostingController(rootView: swiftUIView)
         addChild(host)
         view.addSubview(host.view)
@@ -69,7 +91,7 @@ class DashboardViewController: UIViewController {
         guard let monthInterval = calendar.dateInterval(of: .month, for: date) else {
             return []
         }
-        
+
         guard var weekStart = calendar.dateInterval(of: .weekOfYear, for: date)?.start else {
             return []
         }
@@ -98,23 +120,37 @@ class DashboardViewController: UIViewController {
     }
 
     private func exportViewToPDF() -> Data? {
-        guard let host = hostingController else { return nil }
-        let hostView = host.view!
+        guard let startDate = startDate else { return nil }
 
-        // Calculate the full content size (critical!)
-        let targetSize = host.sizeThatFits(in: CGSize(
-            width: hostView.bounds.width,
-            height: .greatestFiniteMagnitude
-        ))
+        // Build a NON-scrollable version of the view
+        let exportView = DashboardChartView(
+            aggregates: hostingController?.rootView.aggregates ?? [],
+            weekly: hostingController?.rootView.weekly ?? [],
+            trends: hostingController?.rootView.trends ?? [],
+            startDate: startDate,
+            exportMode: true
+        )
 
-        hostView.bounds = CGRect(origin: .zero, size: targetSize)
-        hostView.layoutIfNeeded()
+        let renderer = ImageRenderer(content: exportView)
+        renderer.scale = UIScreen.main.scale
 
-        let renderer = UIGraphicsPDFRenderer(bounds: CGRect(origin: .zero, size: targetSize))
+        var pdfData: Data?
 
-        let pdfData = renderer.pdfData { context in
-            context.beginPage()
-            hostView.layer.render(in: context.cgContext)
+        // renderer.render provides a (size, draw) pair we can use to create a PDF
+        renderer.render { size, draw in
+            // create PDF renderer with the SwiftUI-render size
+            let pdfRenderer = UIGraphicsPDFRenderer(bounds: CGRect(origin: .zero, size: size))
+
+            pdfData = pdfRenderer.pdfData { ctx in
+                ctx.beginPage()
+                let cg = ctx.cgContext
+
+                // Apply UIKit → CoreGraphics coordinate flip
+                cg.translateBy(x: 0, y: size.height)
+                cg.scaleBy(x: 1, y: -1)
+
+                draw(cg)
+            }
         }
 
         return pdfData
