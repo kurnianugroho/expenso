@@ -14,7 +14,7 @@
         <!--Login View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="LoginViewController" customModule="expenso" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginVC" id="BYZ-38-t0r" customClass="LoginViewController" customModule="expenso" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -514,10 +514,68 @@
                         <rect key="frame" x="0.0" y="118" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
+                    <connections>
+                        <segue destination="y37-3y-7QU" kind="relationship" relationship="rootViewController" id="cUS-XH-K13"/>
+                    </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rlm-wz-G3H" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1714" y="1458"/>
+        </scene>
+        <!--Expenso-->
+        <scene sceneID="dq7-ax-9rA">
+            <objects>
+                <viewController id="y37-3y-7QU" customClass="SettingsViewController" customModule="expenso" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="S7C-wo-oaD">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="H2D-We-Hff">
+                                <rect key="frame" x="30" y="632.33333333333337" width="333" height="92.666666666666629"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Expenso" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M9C-oU-gUQ">
+                                        <rect key="frame" x="0.0" y="0.0" width="333" height="35.666666666666664"/>
+                                        <fontDescription key="fontDescription" name="SavoyeLetPlain" family="Savoye LET" pointSize="30"/>
+                                        <color key="textColor" name="TextHighlight"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="github.com/kurnianugroho/expenso" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Bx-7q-Itb">
+                                        <rect key="frame" x="0.0" y="36.666666666666629" width="333" height="18"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="13"/>
+                                        <color key="textColor" name="TextHighlight"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="kurnia.nugroho@gmail.com" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UHv-9t-Eap">
+                                        <rect key="frame" x="0.0" y="55.666666666666629" width="333" height="18"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="13"/>
+                                        <color key="textColor" name="TextHighlight"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" © 2025" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ulS-h9-gS3">
+                                        <rect key="frame" x="0.0" y="74.666666666666629" width="333" height="18"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="13"/>
+                                        <color key="textColor" name="TextHighlight"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="LAr-cg-unf"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="H2D-We-Hff" firstAttribute="leading" secondItem="LAr-cg-unf" secondAttribute="leading" constant="30" id="C90-mt-ITG"/>
+                            <constraint firstItem="LAr-cg-unf" firstAttribute="bottom" secondItem="H2D-We-Hff" secondAttribute="bottom" constant="10" id="hSF-Ir-6uT"/>
+                            <constraint firstItem="LAr-cg-unf" firstAttribute="trailing" secondItem="H2D-We-Hff" secondAttribute="trailing" constant="30" id="p9t-n9-hPR"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Expenso" id="Loj-eb-pbk"/>
+                    <connections>
+                        <outlet property="brandLabel" destination="H2D-We-Hff" id="vjX-Gt-DZz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EYG-wz-oBi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2514" y="1458"/>
         </scene>
     </scenes>
     <resources>

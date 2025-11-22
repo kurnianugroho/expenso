@@ -133,11 +133,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             {
                 expensesVC.userId = userId
             }
-
-//            if let settingsNav = navs[1],
-//               let settingsVC = settingsNav.viewControllers.first as? SettingsViewController {
-//                 settingsVC.someProperty = ...
-//            }
         }
 
         // Replace window rootViewController
